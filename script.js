@@ -3,7 +3,7 @@ function substract(a, b){return a - b;}
 function multiply(a, b){return a * b;}
 function divide(a, b){
     if (b == 0 ){
-        return "pls enter a non-zero value";
+        return "Error";
     }
     return a / b;}
 
@@ -53,6 +53,14 @@ function handleOperator(nextOperator) {
   if (operator && !shouldResetDisplay) {
     const result = operate(operator, firstNumber, currentValue);
     updateDisplay(result);
+
+    if (result === "Error") {
+      firstNumber = null;
+      operator = null;
+      shouldResetDisplay = true;
+      return;
+    }
+
     firstNumber = result;
   } else {
     firstNumber = currentValue;
@@ -63,9 +71,16 @@ function handleOperator(nextOperator) {
 }
 
 document.querySelector('#equals').addEventListener('click', () => {
-  if (operator === null || shouldResetDisplay) return; // nothing to evaluate
-  const result = operate(operator, firstNumber, Number(display.textContent));
+  if (operator === null || shouldResetDisplay) return;
+
+  const result = operate(
+    operator,
+    firstNumber,
+    Number(display.textContent)
+  );
+
   updateDisplay(result);
+
   firstNumber = null;
   operator = null;
   shouldResetDisplay = true;
